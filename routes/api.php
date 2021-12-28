@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\WebsitesController;
 use App\Http\Controllers\Api\SubscriptionController;
-
+use App\Http\Controllers\Api\PostController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -31,6 +31,8 @@ Route::prefix('v1')->group(function () {
     Route::resource('websites', WebsitesController::class);
     Route::get('subscriptions', [SubscriptionController::class, 'index']);
     Route::post('subscriptions', [SubscriptionController::class, 'subscribe']);
+
+    Route::resource('posts', PostController::class);
 });
 
 
@@ -40,6 +42,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('test', [AuthController::class, 'test']);
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
