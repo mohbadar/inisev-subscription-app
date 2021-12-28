@@ -17,7 +17,6 @@ class CreateWebsitesTable extends Migration
             $table->id();
             $table->string('name')->nullable(false);
             $table->string('url')->unique();
-            $table->string('name');
             $table->text('description');
             $table->timestamps();
         });

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\WebsitesController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -20,11 +21,15 @@ use Illuminate\Support\Facades\Auth;
 Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
-
-    // Route::middleware('auth:api')->group(function () {
-    //     Route::resource('posts', PostController::class);
-    // });
 });
+
+
+
+Route::prefix('v1')->group(function () {
+    Route::resource('websites', WebsitesController::class);
+});
+
+
 
 
 Route::middleware('auth:api')->group(function () {
