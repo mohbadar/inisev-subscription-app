@@ -31,6 +31,9 @@ Route::prefix('v1')->group(function () {
     Route::get('subscriptions', [SubscriptionController::class, 'index']);
     Route::post('subscriptions', [SubscriptionController::class, 'subscribe']);
 
+
+    Route::post('send-mails', [SubscriptionController::class, 'sendMails']);
+
     Route::resource('posts', PostController::class);
 });
 

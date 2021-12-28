@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\SendMail;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SubscriptionResource;
 use Illuminate\Http\Request;
 use App\Models\Subscription;
+use App\Models\Website;
 use Exception;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -68,8 +71,8 @@ class SubscriptionController extends Controller
     public function subscribe(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id'       => 'required',
-            'website_id' => 'required',
+            'user_id'       => 'required|integer',
+            'website_id' => 'required|integer',
         ]);
 
         if ($validator->fails()) return sendError('Validation Error.', $validator->errors(), 422);
@@ -87,6 +90,31 @@ class SubscriptionController extends Controller
         }
 
         return sendResponse($success, $message);
+    }
+
+
+
+    public function sendMails(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'website_id' => 'required|integer'
+        ]);
+
+        if ($validator->fails()) return sendError('Validation Error.', $validator->errors(), 422);
+
+
+        $website = Website::find($request->website_id);
+
+
+        // $posts = $website->posts();
+
+        $subscriptions = $website->subscriptions();
+        foreach($subscriptions as $subscription){
+            Event::fire(new SendMail($subscription->id));
+        }
+
+        return response()->json(['message', 'Mails have been sent']);
+
     }
 
 }

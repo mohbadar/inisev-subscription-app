@@ -15,7 +15,7 @@ class WebsitesTableSeeder extends Seeder
     public function run()
     {
         //truncate table
-        Website::truncate();
+        // Website::truncate();
 
         $faker = \Faker\Factory::create();
 
