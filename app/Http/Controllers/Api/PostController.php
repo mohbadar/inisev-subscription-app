@@ -2,15 +2,25 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\SendMail;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Website;
+use Illuminate\Support\Facades\Event;
 
+
+/**
+ * @OA\Info(
+ *    title="Subscription Application",
+ *    version="1.0.0",
+ * )
+ */
 class PostController extends Controller
 {
     /**
@@ -33,25 +43,38 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
-            'title'       => 'required|min:10',
-            'description' => 'required|min:40',
+            'title'       => 'required',
+            'description' => 'required',
             'website_id' => 'required'
         ]);
 
-        if ($validator->fails()) return sendError('Validation Error.', $validator->errors(), 422);
+        // dd($request->title);
+
+        // if ($validator->fails()) return sendError('Validation Error.', $validator->errors(), 422);
 
         try {
+
+            // $website = Website::find($request->website_id);
             $post    = Post::create([
                 'title'       => $request->title,
                 'description' => $request->description,
                 'website_id'  => $request->website_id,
-                'user_id'     => Auth::user()->id,
+                // 'user_id'     => Auth::user()->id,
             ]);
 
-            $website = Website::find($request->website_id);
+            // $website = Website::find($request->website_id);
 
-            $website->user
+
+            // $posts = $website->posts();
+
+            // $subscriptions = $website->subscriptions();
+            // foreach($subscriptions as $subscription){
+            //     Event::fire(new SendMail($subscription->id));
+            // }
+
+
 
             $success = new PostResource($post);
             $message = 'Yay! A post has been successfully created.';

@@ -9,6 +9,12 @@ use App\Models\Subscription;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @OA\Info(
+ *    title="Subscription Application",
+ *    version="1.0.0",
+ * )
+ */
 class SubscriptionController extends Controller
 {
 

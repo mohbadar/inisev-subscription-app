@@ -13,4 +13,10 @@ class Website extends Model
     {
         return $this->hasMany(Subscription::class);
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Posts::class, 'website_id', 'id');
+    }
+
 }
