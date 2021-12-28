@@ -34,7 +34,7 @@ class SendMailFired
     public function handle(SendMail $event)
     {
 
-        dd($event);
+        // dd($event);
         $subscription = Subscription::find($event->subscriptionId)->toArray();
         $user = User::find($subscription->user_id)->toArray();
         $website = Website::find($subscription->website_id)->toArray();
