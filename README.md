@@ -77,3 +77,11 @@ Refer to http:://localhost:8000/api/documentation
 ```
     php artisan serve
 ```
+
+
+### Documenation Links
+
+https://laravel.com/docs/8.x/passport
+https://laratrust.santigarcor.me/docs/6.x/installation.html
+https://blog.quickadminpanel.com/laravel-api-documentation-with-openapiswagger/
+
