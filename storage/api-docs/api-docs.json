@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Your super  ApplicationAPI",
+        "title": "Subscription Application",
         "version": "1.0.0"
     },
     "paths": {
@@ -134,6 +134,43 @@
                     },
                     "404": {
                         "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/access-cache-token": {
+            "get": {
+                "tags": [
+                    "access-cache-token"
+                ],
+                "summary": "access-cache-token",
+                "description": "access-cache-token",
+                "operationId": "access-cache-token",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Wrong  response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, Please try again"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }

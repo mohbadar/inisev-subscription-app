@@ -15,12 +15,6 @@ use App\Models\Website;
 use Illuminate\Support\Facades\Event;
 
 
-/**
- * @OA\Info(
- *    title="Subscription Application",
- *    version="1.0.0",
- * )
- */
 class PostController extends Controller
 {
     /**

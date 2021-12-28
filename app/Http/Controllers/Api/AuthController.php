@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Exception;
-
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @OA\Info(
- *    title="Your super  ApplicationAPI",
+ *    title="Subscription Application",
  *    version="1.0.0",
  * )
  */
@@ -56,10 +56,15 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+
         if (Auth::attempt($credentials)) {
             $user             = Auth::user();
             $success['name']  = $user->name;
             $success['token'] = $user->createToken('accessToken')->accessToken;
+
+            Cache::store('file')->put($user->email, $user, 600); // 10 Minutes Caching
+            Cache::store('file')->put($user->email,$success['token'], 600); // 10 Minutes
+
 
             return sendResponse($success, 'You are successfully logged in.');
         } else {
@@ -144,5 +149,40 @@ class AuthController extends Controller
         }else{
             return response()->json(['message' => 'Unauthorized'], 403);
         }
+    }
+
+
+
+
+     /**
+         * @OA\Get(
+         * path="/api/v1/access-cached-token",
+         * summary="access-cached-token",
+         * description="access-cached-token",
+         * operationId="access-cached-token",
+         * tags={"access-cached-token"},
+         * @OA\RequestBody(
+         *    required=true,
+         *    description="Pass user credentials",
+         *    @OA\JsonContent(
+         *
+         *    ),
+         * ),
+         * @OA\Response(
+         *    response=422,
+         *    description="Wrong  response",
+         *    @OA\JsonContent(
+         *       @OA\Property(property="message", type="string", example="Sorry, Please try again")
+         *        )
+         *     )
+         * )
+    */
+    public function getCachedToken(Request $request)
+    {
+        $value = Cache::get($request->user->email);
+
+        if($value)
+            return response()->json(["cachedAccessToken", Cache::get($request->user->email)]);
+
     }
 }

@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Auth;
 
 Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
 });
 
 
@@ -38,9 +37,15 @@ Route::prefix('v1')->group(function () {
 
 
 
-Route::middleware('auth:api')->group(function () {
+Route::prefix('v1')->group(function () {
+    Route::middleware('auth:api')->group(function () {
         Route::get('test', [AuthController::class, 'test']);
+        Route::get('cached-access-token', [AuthController::class, 'getCachedToken']);
+        Route::post('register', [AuthController::class, 'register']);
+    });
 });
+
+
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

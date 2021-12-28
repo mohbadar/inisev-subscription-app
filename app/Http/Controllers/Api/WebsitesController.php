@@ -9,13 +9,8 @@ use App\Models\Website;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 
-/**
- * @OA\Info(
- *    title="Subscription Application",
- *    version="1.0.0",
- * )
- */
 class WebsitesController extends Controller
 {
      /**
@@ -52,6 +47,9 @@ class WebsitesController extends Controller
                 'url'       => $request->url,
                 'description' => $request->description
             ]);
+
+            Cache::store('file')->put($website->name, $website->url, 600); // 10 Minutes Cache
+
             $success = new WebsiteResource($website);
             $message = 'Yay! A website has been successfully created.';
         } catch (Exception $e) {
