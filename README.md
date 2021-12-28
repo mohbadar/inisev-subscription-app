@@ -1,5 +1,17 @@
+### Used Libraries
+
+```
+        "darkaonline/l5-swagger": "^8.0",  ---> API Documentation
+        "laravel/passport": "^10.2", ---> for authentication
+        "santigarcor/laratrust": "^6.3"  ---> for authorization with role, permission, and user
+```
+
+### Note
+
+- To Send Email the Mail Server Configuration Needs to be Managed
+
 ### MUST:-
-- Use PHP 7.* --
+- Use PHP 7.* --`Done`
 - Write migrations for the required tables.  -- `Done`
 - Endpoint to create a "post" for a "particular website". -- `Done`
 - Endpoint to make a user subscribe to a "particular website" with all the tiny validations included in it. --`Done`
