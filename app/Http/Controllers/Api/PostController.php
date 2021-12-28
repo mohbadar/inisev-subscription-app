@@ -17,11 +17,28 @@ use Illuminate\Support\Facades\Event;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+        /**
+         * @OA\Get(
+         * path="/api/v1/posts",
+         * summary="get-all-posts",
+         * operationId="get-all-posts",
+         * tags={"get-all-posts"},
+         * @OA\RequestBody(
+         *    required=true,
+         *    description="",
+         *    @OA\JsonContent(
+         *
+         *    ),
+         * ),
+         * @OA\Response(
+         *    response=422,
+         *    description="Wrong response",
+         *    @OA\JsonContent(
+         *       @OA\Property(property="message", type="string", example="Sorry, Please try again")
+         *        )
+         *     )
+         * )
+    */
     public function index()
     {
         $posts = Post::all();
@@ -29,12 +46,45 @@ class PostController extends Controller
         return sendResponse(PostResource::collection($posts), 'Posts retrieved successfully.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+     /**
+        * @OA\Post(
+        * path="/api/v1/posts",
+        * operationId="Register New Post",
+        * tags={"Register"},
+        * summary="Post Register",
+        * description=" Register here",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"title","description", "website_id"},
+        *               @OA\Property(property="title", type="text"),
+        *               @OA\Property(property="description", type="text"),
+        *               @OA\Property(property="website_id", type="integer")
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Register Successfully",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="Register Successfully",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(response=400, description="Bad request"),
+        *      @OA\Response(response=404, description="Resource Not Found"),
+        * )
+    */
     public function store(Request $request)
     {
 
@@ -44,48 +94,60 @@ class PostController extends Controller
             'website_id' => 'required'
         ]);
 
-        // dd($request->title);
 
-        // if ($validator->fails()) return sendError('Validation Error.', $validator->errors(), 422);
+        if ($validator->fails()) return sendError('Validation Error.', $validator->errors(), 422);
 
-        try {
+        // try {
 
-            // $website = Website::find($request->website_id);
             $post    = Post::create([
                 'title'       => $request->title,
                 'description' => $request->description,
-                'website_id'  => $request->website_id,
-                // 'user_id'     => Auth::user()->id,
+                'website_id'  => $request->website_id
             ]);
 
-            // $website = Website::find($request->website_id);
+            $website = Website::find($request->website_id);
 
 
             // $posts = $website->posts();
 
-            // $subscriptions = $website->subscriptions();
-            // foreach($subscriptions as $subscription){
-            //     Event::fire(new SendMail($subscription->id));
-            // }
+            $subscriptions = $website->subscriptions();
+            foreach($subscriptions as $subscription){
+                Event::fire(new SendMail($subscription->id));
+            }
 
 
 
             $success = new PostResource($post);
             $message = 'Yay! A post has been successfully created.';
-        } catch (Exception $e) {
-            $success = [];
-            $message = 'Oops! Unable to create a new post.';
-        }
+        // } catch (Exception $e) {
+        //     $success = [];
+        //     $message = 'Oops! Unable to create a new post.';
+        // }
 
         return sendResponse($success, $message);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
+     /**
+         * @OA\Get(
+         * path="/api/v1/websites/{id)",
+         * summary="get-website",
+         * operationId="get-website",
+         * tags={"get-websites"},
+         * @OA\RequestBody(
+         *    required=true,
+         *    description="",
+         *    @OA\JsonContent(
+         *
+         *    ),
+         * ),
+         * @OA\Response(
+         *    response=422,
+         *    description="Wrong response",
+         *    @OA\JsonContent(
+         *       @OA\Property(property="message", type="string", example="Sorry, Please try again")
+         *        )
+         *     )
+         * )
+    */
     public function show($id)
     {
         $post = Post::find($id);
@@ -126,12 +188,28 @@ class PostController extends Controller
         return sendResponse($success, $message);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Post $post
-     * @return \Illuminate\Http\JsonResponse
-     */
+     /**
+         * @OA\Delete(
+         * path="/api/v1/posts/{id)",
+         * summary="delete-post",
+         * operationId="delete-post",
+         * tags={"delete-post"},
+         * @OA\RequestBody(
+         *    required=true,
+         *    description="",
+         *    @OA\JsonContent(
+         *
+         *    ),
+         * ),
+         * @OA\Response(
+         *    response=422,
+         *    description="Wrong response",
+         *    @OA\JsonContent(
+         *       @OA\Property(property="message", type="string", example="Sorry, Please try again")
+         *        )
+         *     )
+         * )
+    */
     public function destroy(Post $post)
     {
         try {

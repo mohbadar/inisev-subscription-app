@@ -33,6 +33,8 @@ class SendMailFired
      */
     public function handle(SendMail $event)
     {
+
+        dd($event);
         $subscription = Subscription::find($event->subscriptionId)->toArray();
         $user = User::find($subscription->user_id)->toArray();
         $website = Website::find($subscription->website_id)->toArray();
@@ -41,8 +43,6 @@ class SendMailFired
 
         foreach($posts as $post){
            // Mail::to($user->email)->send(new Subscribe($user->email, $post->title, $post->description));
-          print_r($post);
-          die;
         }
 
     }

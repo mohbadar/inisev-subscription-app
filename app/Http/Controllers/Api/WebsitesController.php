@@ -13,11 +13,28 @@ use Illuminate\Support\Facades\Cache;
 
 class WebsitesController extends Controller
 {
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+      /**
+         * @OA\Get(
+         * path="/api/v1/websites",
+         * summary="get-all-websites",
+         * operationId="get-all-websites",
+         * tags={"get-all-websites"},
+         * @OA\RequestBody(
+         *    required=true,
+         *    description="",
+         *    @OA\JsonContent(
+         *
+         *    ),
+         * ),
+         * @OA\Response(
+         *    response=422,
+         *    description="Wrong response",
+         *    @OA\JsonContent(
+         *       @OA\Property(property="message", type="string", example="Sorry, Please try again")
+         *        )
+         *     )
+         * )
+    */
     public function index()
     {
         $websites = Website::all();
@@ -25,12 +42,45 @@ class WebsitesController extends Controller
         return sendResponse(WebsiteResource::collection($websites), 'Websites retrieved successfully.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+     /**
+        * @OA\Post(
+        * path="/api/v1/websites",
+        * operationId="Register New website",
+        * tags={"Register"},
+        * summary="Post Register",
+        * description=" Register here",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"name","description", "url"},
+        *               @OA\Property(property="name", type="text"),
+        *               @OA\Property(property="description", type="text"),
+        *               @OA\Property(property="url", type="text")
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Register Successfully",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="Register Successfully",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(response=400, description="Bad request"),
+        *      @OA\Response(response=404, description="Resource Not Found"),
+        * )
+    */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -60,12 +110,28 @@ class WebsitesController extends Controller
         return sendResponse($success, $message);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
+      /**
+         * @OA\Get(
+         * path="/api/v1/websites/{id}",
+         * summary="get-website",
+         * operationId="get-website",
+         * tags={"get-websites"},
+         * @OA\RequestBody(
+         *    required=true,
+         *    description="",
+         *    @OA\JsonContent(
+         *
+         *    ),
+         * ),
+         * @OA\Response(
+         *    response=422,
+         *    description="Wrong response",
+         *    @OA\JsonContent(
+         *       @OA\Property(property="message", type="string", example="Sorry, Please try again")
+         *        )
+         *     )
+         * )
+    */
     public function show($id)
     {
         $website = Website::find($id);
@@ -106,12 +172,28 @@ class WebsitesController extends Controller
         return sendResponse($success, $message);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Website $website
-     * @return \Illuminate\Http\JsonResponse
-     */
+     /**
+         * @OA\Delete(
+         * path="/api/v1/websites/{id)",
+         * summary="delete-website",
+         * operationId="delete-website",
+         * tags={"delete-websites"},
+         * @OA\RequestBody(
+         *    required=true,
+         *    description="",
+         *    @OA\JsonContent(
+         *
+         *    ),
+         * ),
+         * @OA\Response(
+         *    response=422,
+         *    description="Wrong response",
+         *    @OA\JsonContent(
+         *       @OA\Property(property="message", type="string", example="Sorry, Please try again")
+         *        )
+         *     )
+         * )
+    */
     public function destroy(Website $website)
     {
         try {

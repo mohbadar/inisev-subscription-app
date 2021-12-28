@@ -27,12 +27,44 @@ class SubscriptionController extends Controller
     }
 
 
-    /**
-     * Subscribe to a Website
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+     /**
+        * @OA\Post(
+        * path="/api/v1/subscribtions",
+        * operationId="Subscribe to a Website",
+        * tags={"Register"},
+        * summary="Post Register",
+        * description=" Register here",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"user_id", "website_id"},
+        *               @OA\Property(property="user_id", type="integer"),
+        *               @OA\Property(property="website_id", type="integer")
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Register Successfully",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="Register Successfully",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(response=400, description="Bad request"),
+        *      @OA\Response(response=404, description="Resource Not Found"),
+        * )
+    */
     public function subscribe(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -11,7 +11,7 @@ class Website extends Model
 
     public function subscriptions()
     {
-        return $this->hasMany(Subscription::class);
+        return $this->hasMany(Subscription::class,'website_id', 'id');
     }
 
     public function posts()
