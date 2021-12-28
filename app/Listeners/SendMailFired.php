@@ -25,6 +25,7 @@ class SendMailFired
         //
     }
 
+
     /**
      * Handle the event.
      *
@@ -35,6 +36,7 @@ class SendMailFired
     {
 
         // dd($event);
+
         $subscription = Subscription::find($event->subscriptionId)->toArray();
         $user = User::find($subscription->user_id)->toArray();
         $website = Website::find($subscription->website_id)->toArray();
@@ -42,8 +44,21 @@ class SendMailFired
         $posts = $website->posts();
 
         foreach($posts as $post){
-           // Mail::to($user->email)->send(new Subscribe($user->email, $post->title, $post->description));
+
+
+            $mails = $user->mails();
+            foreach($mails as $mail){
+                if($post->id != $mail->post_id){
+                    // To avoid error Mail server need to be configured
+                // Mail::to($user->email)->send(new Subscribe($user->email, $post->title, $post->description));
+                }
+            }
+
+
         }
 
     }
+
+
+
 }

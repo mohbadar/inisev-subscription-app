@@ -54,4 +54,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Website::class);
     }
+
+
+    public function mails()
+    {
+        return $this->hasMany(MailHistory::class);
+    }
 }
