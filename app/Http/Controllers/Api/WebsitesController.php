@@ -84,8 +84,8 @@ class WebsitesController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'       => 'required|min:10',
-            'description' => 'required|min:40',
+            'name'       => 'required|min:10|max:100',
+            'description' => 'required|min:40|max:300',
             "url" => 'required|min:10|max:100'
         ]);
 

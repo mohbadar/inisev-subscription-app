@@ -49,11 +49,13 @@ class SendMailFired
             foreach($posts as $post){
 
 
+                //get send emails to user
                 $mails = $user->mails();
                 foreach($mails as $mail){
+                    //send email if already not sent
                     if($post->id != $mail->post_id){
                         // To avoid error Mail server need to be configured
-                    // Mail::to($user->email)->send(new Subscribe($user->email, $post->title, $post->description));
+                        Mail::to($user->email)->send(new Subscribe($user->email, $post->title, $post->description));
                     }
                 }
 

@@ -71,8 +71,8 @@ class SubscriptionController extends Controller
     public function subscribe(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id'       => 'required|integer',
-            'website_id' => 'required|integer',
+            'user_id'       => 'required|integer|min:1',
+            'website_id' => 'required|integer|min:1',
         ]);
 
         if ($validator->fails()) return sendError('Validation Error.', $validator->errors(), 422);
@@ -97,24 +97,17 @@ class SubscriptionController extends Controller
     public function sendMails(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'website_id' => 'required|integer'
+            'website_id' => 'required|integer|min:1'
         ]);
 
         if ($validator->fails()) return sendError('Validation Error.', $validator->errors(), 422);
 
 
         $website = Website::find($request->website_id);
-
-
-        // $posts = $website->posts();
-
         $subscriptions = $website->subscriptions();
-        foreach($subscriptions as $subscription){
-            Event::fire(new SendMail($subscription->id));
-        }
+        Event::fire(new SendMail($subscriptions));
 
         return response()->json(['message', 'Mails have been sent']);
-
     }
 
 }

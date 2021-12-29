@@ -19,11 +19,9 @@ class SendMail
      *
      * @return void
      */
-    // public $userId;
     public $subscriptions;
     public function __construct($subscriptions)
     {
-        // $this->userId = $userId;
         $this->subscriptions = $subscriptions;
     }
 

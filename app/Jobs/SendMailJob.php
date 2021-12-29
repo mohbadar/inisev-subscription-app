@@ -34,16 +34,9 @@ class SendMailJob implements ShouldQueue
     public function handle()
     {
         $websites = Website::all();
-
-
         foreach($websites as $website){
             $subscriptions = $website->subscriptions();
-            foreach($subscriptions as $subscription){
-                Event::fire(new SendMail($subscription->id));
-            }
+            Event::fire(new SendMail($subscriptions));
         }
-
-
-
     }
 }
