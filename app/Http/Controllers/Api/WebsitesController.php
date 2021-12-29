@@ -86,7 +86,7 @@ class WebsitesController extends Controller
         $validator = Validator::make($request->all(), [
             'name'       => 'required|min:10',
             'description' => 'required|min:40',
-            "url" => 'required'
+            "url" => 'required|min:10|max:100'
         ]);
 
         if ($validator->fails()) return sendError('Validation Error.', $validator->errors(), 422);

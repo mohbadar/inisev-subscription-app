@@ -89,9 +89,9 @@ class PostController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'title'       => 'required',
-            'description' => 'required',
-            'website_id' => 'required'
+            'title'       => 'required|max:100|min:5',
+            'description' => 'required|max:300|min:10',
+            'website_id' => 'required|integer'
         ]);
 
 
@@ -110,10 +110,11 @@ class PostController extends Controller
 
             // $posts = $website->posts();
 
+            //get only the users who are subscribed to this website
             $subscriptions = $website->subscriptions();
-            foreach($subscriptions as $subscription){
-                Event::fire(new SendMail($subscription->id));
-            }
+
+            Event::fire(new SendMail($subscriptions));
+
 
 
 
